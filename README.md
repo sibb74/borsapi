@@ -1,52 +1,45 @@
-# @borsapi/mcp-server
+# BörsAPI – Integrationsverktyg & MCP-server
 
-MCP (Model Context Protocol) server for [BörsAPI](https://borsapi.se) — query standardized Swedish financial data directly from AI tools like **Cursor**, **Claude Desktop**, and **Windsurf**.
+Detta repository innehåller officiella integrationsverktyg, kodexempel och källkoden för MCP-servern till [BörsAPI](https://borsapi.se) — Sveriges moderna REST-API för finansiell data från Nasdaq Stockholm.
 
-MCP calls use the same API key and quota as the REST API.
+---
 
-## Requirements
+## 📂 Innehåll
 
-- Node.js 18+
-- A BörsAPI API key ([get one free at borsapi.se/dashboard](https://borsapi.se/dashboard))
+1. **[MCP-server (Model Context Protocol)](#-mcp-server-model-context-protocol)** — Fråga din AI (Cursor, Claude, Windsurf) direkt om svensk börsdata.
+2. **[Fler integrationsexempel (Google Sheets, Excel, Python...)](#-fler-integrationsexempel-google-sheets-excel-python)** — Färdiga kodsnuttar för kalkylark och egna skript.
 
-## Installation
+---
 
-No global install required. MCP clients typically run the server via `npx`:
+## 🤖 MCP-server (Model Context Protocol)
+
+[![npm version](https://img.shields.io/npm/v/@borsapi/mcp-server.svg)](https://www.npmjs.com/package/@borsapi/mcp-server)
+
+Med vår MCP-server kan du ställa frågor och hämta standardiserad finansiell data för svenska börsbolag direkt i AI-verktyg som **Cursor**, **Claude Desktop** och **Windsurf**.
+
+### Krav
+- **Node.js** 18 eller senare
+- En **BörsAPI-nyckel** ([skapa ett gratis konto på borsapi.se](https://borsapi.se/dashboard) för att få en nyckel)
+
+### Installation & Användning
+Du behöver inte installera paketet globalt. De flesta AI-klienter kör servern direkt via `npx`:
 
 ```bash
 npx -y @borsapi/mcp-server
 ```
 
-## Configuration
+Du hittar även paketet direkt på npm: [@borsapi/mcp-server](https://www.npmjs.com/package/@borsapi/mcp-server).
 
-Set your API key as an environment variable:
+### Konfiguration
+Konfigurera din AI-klient genom att ange din API-nyckel som en miljövariabel (`env`):
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `BORSAPI_API_KEY` | Yes | — | Your BörsAPI API key (`fd_...`) |
-| `BORSAPI_BASE_URL` | No | `https://borsapi.se` | API base URL (useful for local development) |
+| Variabel | Krävs | Standard | Beskrivning |
+|----------|-------|----------|-------------|
+| `BORSAPI_API_KEY` | **Ja** | — | Din BörsAPI-nyckel (börjar med `fd_...`) |
+| `BORSAPI_BASE_URL` | Nej | `https://borsapi.se` | Bas-URL för API:et (används främst under lokal utveckling) |
 
-### Cursor
-
-Add to `~/.cursor/mcp.json` (or project `.cursor/mcp.json`):
-
-```json
-{
-  "mcpServers": {
-    "borsapi": {
-      "command": "npx",
-      "args": ["-y", "@borsapi/mcp-server"],
-      "env": {
-        "BORSAPI_API_KEY": "fd_your_api_key_here"
-      }
-    }
-  }
-}
-```
-
-### Claude Desktop
-
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
+#### Cursor
+Öppna inställningarna i Cursor (Features -> MCP) eller lägg till i din konfigurationsfil (t.ex. `~/.cursor/mcp.json` eller projektets `.cursor/mcp.json`):
 
 ```json
 {
@@ -55,16 +48,17 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
       "command": "npx",
       "args": ["-y", "@borsapi/mcp-server"],
       "env": {
-        "BORSAPI_API_KEY": "fd_your_api_key_here"
+        "BORSAPI_API_KEY": "fd_din_api_nyckel_här"
       }
     }
   }
 }
 ```
 
-### Windsurf
-
-Add to your Windsurf MCP configuration:
+#### Claude Desktop
+Lägg till konfigurationen i din `claude_desktop_config.json`:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
 {
@@ -73,16 +67,15 @@ Add to your Windsurf MCP configuration:
       "command": "npx",
       "args": ["-y", "@borsapi/mcp-server"],
       "env": {
-        "BORSAPI_API_KEY": "fd_your_api_key_here"
+        "BORSAPI_API_KEY": "fd_din_api_nyckel_här"
       }
     }
   }
 }
 ```
 
-### Local development
-
-Point the server at a local Next.js instance:
+#### Windsurf
+Lägg till följande i din Windsurf MCP-konfiguration:
 
 ```json
 {
@@ -91,73 +84,92 @@ Point the server at a local Next.js instance:
       "command": "npx",
       "args": ["-y", "@borsapi/mcp-server"],
       "env": {
-        "BORSAPI_API_KEY": "fd_your_api_key_here",
-        "BORSAPI_BASE_URL": "http://localhost:3000"
+        "BORSAPI_API_KEY": "fd_din_api_nyckel_här"
       }
     }
   }
 }
 ```
 
-## Tools
+---
 
-| Tool | Description |
-|------|-------------|
-| `search_companies` | Search and list Swedish listed companies |
-| `get_company` | Get company details by UUID or ISIN |
-| `get_company_coverage` | List available report periods and types for a company |
-| `list_reports` | List financial reports with filters (type, period, entity) |
-| `get_report` | Get a specific report for a period (consolidated RR+BR+KA) |
-| `get_coverage_stats` | Database-wide statistics (no auth required) |
-| `check_api_key` | Validate API key and check remaining quota |
+## 📊 Fler integrationsexempel (Google Sheets, Excel, Python...)
 
-### Sign convention
+Om du inte använder en AI-klient utan vill ansluta BörsAPI till kalkylark eller egna skript, hittar du färdiga kodexempel i katalogen [`examples/`](./examples):
 
-All financial data follows BörsAPI conventions:
+- **[Google Sheets](./examples/google-sheets):** Apps Script-kod för att skapa en egen formel `=BORSAPI()` som hämtar data live till dina celler.
+- **[Excel Power Query](./examples/excel):** M-kod för att hämta rapporter direkt till Excel-tabeller.
+- **[Python](./examples/python):** Skript för att hämta bolagsrapporter och skriva ut finansiella nyckeltal.
+- **[Node.js](./examples/nodejs):** Exempel på REST API-anrop med fetch.
 
-- **Positive:** revenues, assets, cash inflows
-- **Negative:** costs, expenses, taxes, liabilities, cash outflows
+---
 
-## Example prompts
+## Verktyg (Tools) i MCP-servern
 
-Once configured, you can ask your AI assistant:
+Följande verktyg görs tillgängliga för din AI-assistent när du kör MCP-servern:
 
-- "Search for Volvo on BörsAPI"
-- "Get the 2024-Q3 income statement for H&M (HM-B)"
-- "Which report periods are available for Atlas Copco?"
-- "How much API quota do I have left?"
+| Verktyg | Beskrivning |
+|---------|-------------|
+| `search_companies` | Sök och lista svenska noterade bolag |
+| `get_company` | Hämta detaljerad bolagsinformation via UUID eller ISIN |
+| `get_company_coverage` | Se vilka rapportperioder och rapporttyper (års-/kvartalsrapporter) som finns tillgängliga för ett bolag |
+| `list_reports` | Hämta finansiella rapporter med filter (t.ex. typ, period, enhet) |
+| `get_report` | Hämta en specifik rapport för en period (konsoliderad resultat-, balans- och kassaflödesanalys) |
+| `get_coverage_stats` | Statistik om databasens totala täckning (kräver ej autentisering) |
+| `check_api_key` | Kontrollera din API-nyckels status och återstående kvot |
 
-## Rate limits
+### Teckenkonvention
+All finansiell data följer BörsAPI:s standard:
+- **Positiva tal:** intäkter, tillgångar, kassaflödesinflöden
+- **Negativa tal:** kostnader, utgifter, skatt, skulder, kassaflödesutflöden
 
-MCP usage counts against the same quota as REST API calls:
+---
 
-| Tier | Limit |
+## Exempel på prompts (Frågor till din AI)
+
+När du har lagt till servern kan du ställa frågor i naturligt språk direkt till din AI:
+
+- *"Sök efter Volvo på BörsAPI"*
+- *"Hämta resultaträkningen för H&M (HM-B) för 2024-Q3"*
+- *"Vilka rapportperioder finns tillgängliga för Atlas Copco?"*
+- *"Hur mycket API-kvot har jag kvar på mitt BörsAPI-konto?"*
+- *"Jämför omsättningen för Evolution 2023 och 2024"*
+
+---
+
+## Kvoter och begränsningar
+
+MCP-anrop räknas mot samma kvot som dina vanliga REST API-anrop:
+
+| Plan | Gräns |
 |------|-------|
-| Free | 100 reports total (lifetime) |
-| Hobby | 100 reports per day |
-| Pro | 500 reports per day |
+| **Gratis Beta** | 100 rapporter totalt (livstidspott för utvärdering) |
+| **Hobby** | 100 rapporter per dag |
+| **Pro** | 500 rapporter per dag |
 
-Each financial report returned counts as 1 unit. Listing companies or checking your key costs 1 unit.
+*Notera: Varje enskild finansiell rapport som returneras i ett svar räknas som 1 enhet. Att söka efter bolag eller kontrollera din nyckel kostar också 1 enhet.*
 
-Use the `check_api_key` tool to inspect remaining quota.
+Du kan köra verktyget `check_api_key` för att se hur mycket kvot du har kvar.
 
-## Development
+---
 
-From the monorepo root:
+## Lokal utveckling (Development)
+
+Om du vill bygga eller köra MCP-servern lokalt från källkoden:
 
 ```bash
+# Klona repot och gå till mappen
 cd packages/mcp-server
 npm install
 npm run build
 npm test
 ```
 
-Run locally:
-
+Starta servern lokalt i utvecklingsläge:
 ```bash
-BORSAPI_API_KEY=fd_your_key npm start
+BORSAPI_API_KEY=fd_din_nyckel npm start
 ```
 
-## License
+## Licens
 
 MIT © BörsAPI AB
