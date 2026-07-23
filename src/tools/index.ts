@@ -7,6 +7,9 @@ import { getCoverageStats } from "./get-coverage-stats.js";
 import { getReport, getReportSchema } from "./get-report.js";
 import { listReports, listReportsSchema } from "./list-reports.js";
 import { searchCompanies, searchCompaniesSchema } from "./search-companies.js";
+import { getCompanyShortPositions, getCompanyShortPositionsSchema } from "./get-company-short-positions.js";
+import { getCompanyShortStatistics, getCompanyShortStatisticsSchema } from "./get-company-short-statistics.js";
+import { listShortPositions, listShortPositionsSchema } from "./list-short-positions.js";
 
 const SIGN_CONVENTION =
   "Costs, expenses, taxes, liabilities, and cash outflows are negative values. Revenues, assets, and inflows are positive.";
@@ -57,6 +60,33 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
       inputSchema: getReportSchema,
     },
     async (args) => getReport(client, args)
+  );
+
+  server.registerTool(
+    "get_company_short_positions",
+    {
+      description: "Get raw short selling positions (blankning) for a company from Finansinspektionen.",
+      inputSchema: getCompanyShortPositionsSchema,
+    },
+    async (args) => getCompanyShortPositions(client, args)
+  );
+
+  server.registerTool(
+    "get_company_short_statistics",
+    {
+      description: "Get aggregated short selling statistics (% total shorted, active holders count) for a company.",
+      inputSchema: getCompanyShortStatisticsSchema,
+    },
+    async (args) => getCompanyShortStatistics(client, args)
+  );
+
+  server.registerTool(
+    "list_short_positions",
+    {
+      description: "List the most shorted Swedish listed companies and global active short positions.",
+      inputSchema: listShortPositionsSchema,
+    },
+    async (args) => listShortPositions(client, args)
   );
 
   server.registerTool(
