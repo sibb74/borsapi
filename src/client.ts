@@ -28,7 +28,7 @@ export class BorsApiClient {
 
     const headers: Record<string, string> = {
       Accept: "application/json",
-      "User-Agent": "borsapi-mcp-server/1.0.1",
+      "User-Agent": "borsapi-mcp-server/1.1.0",
     };
 
     if (requireAuth) {
@@ -36,6 +36,45 @@ export class BorsApiClient {
     }
 
     const response = await this.fetchImpl(url.toString(), { headers });
+    const text = await response.text();
+
+    let body: unknown = null;
+    if (text) {
+      try {
+        body = JSON.parse(text) as unknown;
+      } catch {
+        body = text;
+      }
+    }
+
+    if (!response.ok) {
+      const errorBody = (body ?? {}) as ApiErrorBody;
+      const message = errorBody.error ?? `Request failed with status ${response.status}`;
+      throw new BorsApiError(response.status, message, errorBody.code);
+    }
+
+    return body as T;
+  }
+
+  async post<T>(path: string, payload?: unknown, requireAuth = true): Promise<T> {
+    const url = new URL(`${this.config.baseUrl}${path}`);
+
+    const headers: Record<string, string> = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "User-Agent": "borsapi-mcp-server/1.1.0",
+    };
+
+    if (requireAuth) {
+      headers.Authorization = `Bearer ${this.config.apiKey}`;
+    }
+
+    const response = await this.fetchImpl(url.toString(), {
+      method: "POST",
+      headers,
+      body: payload ? JSON.stringify(payload) : undefined,
+    });
+
     const text = await response.text();
 
     let body: unknown = null;

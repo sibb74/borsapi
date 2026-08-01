@@ -10,6 +10,10 @@ import { listReports } from "../src/tools/list-reports.js";
 import { getReport } from "../src/tools/get-report.js";
 import { getCoverageStats } from "../src/tools/get-coverage-stats.js";
 import { checkApiKey } from "../src/tools/check-api-key.js";
+import { getCompanyInsiderTransactions } from "../src/tools/get-company-insider-transactions.js";
+import { getCompanyInsiderStatistics } from "../src/tools/get-company-insider-statistics.js";
+import { exportCompanyReports } from "../src/tools/export-company-reports.js";
+import { requestCompanyPriority } from "../src/tools/request-company-priority.js";
 
 function createMockFetch(response: {
   ok: boolean;
@@ -431,5 +435,92 @@ describe("BorsApiClient edge cases", () => {
         return true;
       }
     );
+  });
+
+  test("getCompanyInsiderTransactions handler returns formatted JSON", async () => {
+    const client = new BorsApiClient(
+      { apiKey: "fd_test_key", baseUrl: "https://borsapi.se" },
+      {
+        fetchImpl: createMockFetch({
+          ok: true,
+          status: 200,
+          body: { data: [{ id: "tx-1", transaction_type: "BUY" }], pagination: { total: 1 } },
+        }),
+      }
+    );
+
+    const res = await getCompanyInsiderTransactions(client, {
+      id: "VOLV-B",
+      transaction_type: "BUY",
+      limit: 10,
+      offset: 0,
+    });
+
+    assert.equal(res.isError, undefined);
+    assert.match(res.content[0].text, /"transaction_type": "BUY"/);
+  });
+
+  test("getCompanyInsiderStatistics handler returns aggregated stats", async () => {
+    const client = new BorsApiClient(
+      { apiKey: "fd_test_key", baseUrl: "https://borsapi.se" },
+      {
+        fetchImpl: createMockFetch({
+          ok: true,
+          status: 200,
+          body: { ticker: "VOLV-B", statistics: { "30d": { buy_count: 3 } } },
+        }),
+      }
+    );
+
+    const res = await getCompanyInsiderStatistics(client, { id: "VOLV-B" });
+    assert.equal(res.isError, undefined);
+    assert.match(res.content[0].text, /"buy_count": 3/);
+  });
+
+  test("exportCompanyReports handler returns exported data", async () => {
+    const client = new BorsApiClient(
+      { apiKey: "fd_test_key", baseUrl: "https://borsapi.se" },
+      {
+        fetchImpl: createMockFetch({
+          ok: true,
+          status: 200,
+          body: "Period,Net Revenue\n2024,1000000",
+        }),
+      }
+    );
+
+    const res = await exportCompanyReports(client, { id: "VOLV-B", period_type: "year" });
+    assert.equal(res.isError, undefined);
+    assert.match(res.content[0].text, /Period,Net Revenue/);
+  });
+
+  test("requestCompanyPriority handler posts priority request", async () => {
+    let capturedBody = "";
+    let capturedMethod = "";
+
+    const fetchImpl = mock.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      capturedMethod = init?.method || "GET";
+      capturedBody = String(init?.body);
+      return {
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ success: true, message: "Prioriterat" }),
+      } as Response;
+    }) as unknown as typeof fetch;
+
+    const client = new BorsApiClient(
+      { apiKey: "fd_test_key", baseUrl: "https://borsapi.se" },
+      { fetchImpl }
+    );
+
+    const res = await requestCompanyPriority(client, {
+      company_ticker: "ERIC-B",
+      company_name: "Ericsson",
+    });
+
+    assert.equal(capturedMethod, "POST");
+    assert.match(capturedBody, /ERIC-B/);
+    assert.equal(res.isError, undefined);
+    assert.match(res.content[0].text, /Prioriterat/);
   });
 });

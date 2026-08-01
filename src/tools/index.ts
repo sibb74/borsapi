@@ -10,6 +10,10 @@ import { searchCompanies, searchCompaniesSchema } from "./search-companies.js";
 import { getCompanyShortPositions, getCompanyShortPositionsSchema } from "./get-company-short-positions.js";
 import { getCompanyShortStatistics, getCompanyShortStatisticsSchema } from "./get-company-short-statistics.js";
 import { listShortPositions, listShortPositionsSchema } from "./list-short-positions.js";
+import { getCompanyInsiderTransactions, getCompanyInsiderTransactionsSchema } from "./get-company-insider-transactions.js";
+import { getCompanyInsiderStatistics, getCompanyInsiderStatisticsSchema } from "./get-company-insider-statistics.js";
+import { exportCompanyReports, exportCompanyReportsSchema } from "./export-company-reports.js";
+import { requestCompanyPriority, requestCompanyPrioritySchema } from "./request-company-priority.js";
 
 const SIGN_CONVENTION =
   "Costs, expenses, taxes, liabilities, and cash outflows are negative values. Revenues, assets, and inflows are positive.";
@@ -87,6 +91,42 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
       inputSchema: listShortPositionsSchema,
     },
     async (args) => listShortPositions(client, args)
+  );
+
+  server.registerTool(
+    "get_company_insider_transactions",
+    {
+      description: "Get insider transactions (insynshandel) for a company from Finansinspektionen. Filter by transaction_type, role, date range.",
+      inputSchema: getCompanyInsiderTransactionsSchema,
+    },
+    async (args) => getCompanyInsiderTransactions(client, args)
+  );
+
+  server.registerTool(
+    "get_company_insider_statistics",
+    {
+      description: "Get aggregated insider trading statistics for a company over 30d, 90d, and 365d (net buy/sell values, CEO activity).",
+      inputSchema: getCompanyInsiderStatisticsSchema,
+    },
+    async (args) => getCompanyInsiderStatistics(client, args)
+  );
+
+  server.registerTool(
+    "export_company_reports",
+    {
+      description: "Export financial reports for a company in CSV format for analysis.",
+      inputSchema: exportCompanyReportsSchema,
+    },
+    async (args) => exportCompanyReports(client, args)
+  );
+
+  server.registerTool(
+    "request_company_priority",
+    {
+      description: "Request priority scraping for a specific Swedish listed company.",
+      inputSchema: requestCompanyPrioritySchema,
+    },
+    async (args) => requestCompanyPriority(client, args)
   );
 
   server.registerTool(
