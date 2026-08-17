@@ -115,11 +115,11 @@ Följande verktyg görs tillgängliga för din AI-assistent när du kör MCP-ser
 | `get_company_coverage` | Se vilka rapportperioder och rapporttyper (års-/kvartalsrapporter) som finns tillgängliga för ett bolag |
 | `list_reports` | Hämta finansiella rapporter med filter (t.ex. typ, period, enhet) |
 | `get_report` | Hämta en specifik rapport för en period (konsoliderad resultat-, balans- och kassaflödesanalys) |
-| `get_company_short_positions` | Hämta alla råa blankningspositioner för ett bolag från FI |
-| `get_company_short_statistics` | Hämta aggregerad blankningsstatistik (% totalt blankat, antal blankare) för ett bolag |
-| `list_short_positions` | Lista Sveriges mest blankade bolag och aktiva positioner |
-| `get_company_insider_transactions` | Hämta insynstransaktioner (köp/sälj/tilldelning av ledande befattningshavare) från FI |
-| `get_company_insider_statistics` | Hämta aggregerad insynsstatistik (30d, 90d, 365d nettoköp och VD-aktivitet) |
+| `get_company_short_positions` | Hämta alla råa blankningspositioner för ett bolag från FI *(Gratis / 0 kvotavdrag)* |
+| `get_company_short_statistics` | Hämta aggregerad blankningsstatistik (% totalt blankat, antal blankare) för ett bolag *(Gratis / 0 kvotavdrag)* |
+| `list_short_positions` | Lista Sveriges mest blankade bolag och aktiva positioner *(Gratis / 0 kvotavdrag)* |
+| `get_company_insider_transactions` | Hämta insynstransaktioner (köp/sälj/tilldelning av ledande befattningshavare) från FI *(Gratis / 0 kvotavdrag)* |
+| `get_company_insider_statistics` | Hämta aggregerad insynsstatistik (30d, 90d, 365d nettoköp och VD-aktivitet) *(Gratis / 0 kvotavdrag)* |
 | `export_company_reports` | Exportera bolagsrapporter till CSV-format |
 | `request_company_priority` | Önska prioriterad skrapning av ett osrkapat bolag |
 | `get_coverage_stats` | Statistik om databasens totala täckning (kräver ej autentisering) |
