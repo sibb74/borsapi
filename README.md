@@ -123,7 +123,7 @@ Följande verktyg görs tillgängliga för din AI-assistent när du kör MCP-ser
 | `export_company_reports` | Exportera bolagsrapporter till CSV-format |
 | `request_company_priority` | Önska prioriterad skrapning av ett osrkapat bolag |
 | `get_coverage_stats` | Statistik om databasens totala täckning (kräver ej autentisering) |
-| `check_api_key` | Kontrollera din API-nyckels status och återstående kvot |
+| `check_api_key` | Kontrollera din API-nyckels status och återstående kvot *(Gratis / 0 kvotavdrag)* |
 
 ### Teckenkonvention
 All finansiell data följer BörsAPI:s standard:
@@ -157,7 +157,7 @@ MCP-anrop räknas mot samma kvot som dina vanliga REST API-anrop:
 | **Hobby** | 100 rapporter per dag |
 | **Pro** | 500 rapporter per dag |
 
-*Notera: Varje enskild finansiell rapport som returneras i ett svar räknas som 1 enhet. Att söka efter bolag eller kontrollera din nyckel kostar också 1 enhet.*
+*Notera: Varje enskild finansiell rapport som returneras i ett svar räknas som 1 enhet. Bolagssökning kostar 1 enhet, medan verktyg för blankning, insynshandel och nyckelkontroll (`check_api_key`) är 100 % kostnadsfria (0 kvotavdrag).*
 
 Du kan köra verktyget `check_api_key` för att se hur mycket kvot du har kvar.
 
