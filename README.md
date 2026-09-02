@@ -115,11 +115,11 @@ Följande verktyg görs tillgängliga för din AI-assistent när du kör MCP-ser
 | `get_company_coverage` | Se vilka rapportperioder och rapporttyper (års-/kvartalsrapporter) som finns tillgängliga för ett bolag |
 | `list_reports` | Hämta finansiella rapporter med filter (t.ex. typ, period, enhet) |
 | `get_report` | Hämta en specifik rapport för en period (konsoliderad resultat-, balans- och kassaflödesanalys) |
-| `get_company_short_positions` | Hämta alla råa blankningspositioner för ett bolag från FI *(Gratis / 0 kvotavdrag)* |
+| `get_company_short_positions` | Hämta alla råa blankningspositioner för ett bolag från FI *(Gratis / 0 kvotavdrag, max 6 mån historik för Free)* |
 | `get_company_short_statistics` | Hämta aggregerad blankningsstatistik (% totalt blankat, antal blankare) för ett bolag *(Gratis / 0 kvotavdrag)* |
 | `list_short_positions` | Lista Sveriges mest blankade bolag och aktiva positioner *(Gratis / 0 kvotavdrag)* |
-| `get_company_insider_transactions` | Hämta insynstransaktioner (köp/sälj/tilldelning av ledande befattningshavare) från FI *(Gratis / 0 kvotavdrag)* |
-| `get_company_insider_statistics` | Hämta aggregerad insynsstatistik (30d, 90d, 365d nettoköp och VD-aktivitet) *(Gratis / 0 kvotavdrag)* |
+| `get_company_insider_transactions` | Hämta insynstransaktioner (köp/sälj/tilldelning av ledande befattningshavare) från FI *(Gratis / 0 kvotavdrag, max 6 mån för Free)* |
+| `get_company_insider_statistics` | Hämta aggregerad insynsstatistik (30d, 90d och 365d nettoköp och VD-aktivitet, 365d kräver Hobby/Pro) *(Gratis / 0 kvotavdrag)* |
 | `export_company_reports` | Exportera bolagsrapporter till CSV-format |
 | `request_company_priority` | Önska prioriterad skrapning av ett osrkapat bolag |
 | `get_coverage_stats` | Statistik om databasens totala täckning (kräver ej autentisering) |
@@ -157,7 +157,7 @@ MCP-anrop räknas mot samma kvot som dina vanliga REST API-anrop:
 | **Hobby** | 100 rapporter per dag |
 | **Pro** | 500 rapporter per dag |
 
-*Notera: Varje enskild finansiell rapport som returneras i ett svar räknas som 1 enhet. Bolagssökning kostar 1 enhet, medan verktyg för blankning, insynshandel och nyckelkontroll (`check_api_key`) är 100 % kostnadsfria (0 kvotavdrag).*
+*Notera: Varje enskild finansiell rapport som returneras i ett svar räknas som 1 enhet. Bolagssökning kostar 1 enhet, medan verktyg för blankning, insynshandel och nyckelkontroll (`check_api_key`) är kostnadsfria (0 kvotavdrag). För Gratis-konton gäller max 6 månaders historik för insynshandel och historiska blankningspositioner samt 30d/90d för insynsstatistik; Hobby och Pro har fullständig och obegränsad historisk tillgång.*
 
 Du kan köra verktyget `check_api_key` för att se hur mycket kvot du har kvar.
 
