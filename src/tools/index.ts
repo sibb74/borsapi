@@ -14,6 +14,8 @@ import { getCompanyInsiderTransactions, getCompanyInsiderTransactionsSchema } fr
 import { getCompanyInsiderStatistics, getCompanyInsiderStatisticsSchema } from "./get-company-insider-statistics.js";
 import { exportCompanyReports, exportCompanyReportsSchema } from "./export-company-reports.js";
 import { requestCompanyPriority, requestCompanyPrioritySchema } from "./request-company-priority.js";
+import { getReportCalendar, getReportCalendarSchema } from "./get-report-calendar.js";
+import { getCompanyCalendar, getCompanyCalendarSchema } from "./get-company-calendar.js";
 
 const SIGN_CONVENTION =
   "Costs, expenses, taxes, liabilities, and cash outflows are negative values. Revenues, assets, and inflows are positive.";
@@ -127,6 +129,26 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
       inputSchema: requestCompanyPrioritySchema,
     },
     async (args) => requestCompanyPriority(client, args)
+  );
+
+  server.registerTool(
+    "get_report_calendar",
+    {
+      description:
+        "Get upcoming reports and corporate events (financial reports, dividends, AGM) for Swedish listed companies within a date range.",
+      inputSchema: getReportCalendarSchema,
+    },
+    async (args) => getReportCalendar(client, args)
+  );
+
+  server.registerTool(
+    "get_company_calendar",
+    {
+      description:
+        "Get upcoming reports and corporate events (reports, dividends) for a specific Swedish company by UUID, ISIN, or Ticker.",
+      inputSchema: getCompanyCalendarSchema,
+    },
+    async (args) => getCompanyCalendar(client, args)
   );
 
   server.registerTool(
