@@ -3,7 +3,7 @@ import type { BorsApiClient } from "../client.js";
 import { formatApiError } from "../client.js";
 
 export const getCompanyShortStatisticsSchema = z.object({
-  id: z.string().describe("Company UUID or ISIN code"),
+  id: z.string().describe("Company UUID, ISIN, or ticker (e.g. VOLV-B)"),
 });
 
 export type GetCompanyShortStatisticsArgs = z.infer<typeof getCompanyShortStatisticsSchema>;

@@ -3,7 +3,7 @@ import type { BorsApiClient } from "../client.js";
 import { formatApiError } from "../client.js";
 
 export const exportCompanyReportsSchema = z.object({
-  id: z.string().describe("Company UUID or ISIN code"),
+  id: z.string().describe("Company UUID, ISIN, or ticker (e.g. VOLV-B)"),
   report_type: z.enum(["RR", "BR", "KA"]).optional().describe("Report type: RR (Income statement), BR (Balance sheet), KA (Cash flow statement)"),
   entity_type: z.enum(["CONSOLIDATED", "PARENT"]).optional().default("CONSOLIDATED").describe("CONSOLIDATED (default) or PARENT"),
   period_type: z.enum(["year", "quarter", "ttm", "all"]).optional().default("year").describe("Period type: year (default), quarter, ttm, or all"),

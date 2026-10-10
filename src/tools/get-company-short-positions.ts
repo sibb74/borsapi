@@ -3,7 +3,7 @@ import type { BorsApiClient } from "../client.js";
 import { formatApiError } from "../client.js";
 
 export const getCompanyShortPositionsSchema = z.object({
-  id: z.string().describe("Company UUID or ISIN code"),
+  id: z.string().describe("Company UUID, ISIN, or ticker (e.g. VOLV-B)"),
   is_active: z.boolean().optional().describe("Filter by active position (>=0.5%) if true, or historical if false"),
   limit: z.number().int().min(1).max(100).optional().default(20).describe("Max positions to return (default 20, max 100)"),
   offset: z.number().int().min(0).optional().default(0).describe("Number of positions to skip"),

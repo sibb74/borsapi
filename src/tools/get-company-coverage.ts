@@ -3,7 +3,7 @@ import type { BorsApiClient } from "../client.js";
 import { formatApiError } from "../client.js";
 
 export const getCompanyCoverageSchema = {
-  company_id: z.string().describe("Company UUID or ISIN (e.g. SE0000115446)"),
+  company_id: z.string().describe("Company UUID, ISIN (e.g. SE0000115446), or ticker (e.g. VOLV-B or VOLV B)"),
 };
 
 export async function getCompanyCoverage(

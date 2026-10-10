@@ -3,7 +3,7 @@ import type { BorsApiClient } from "../client.js";
 import { formatApiError } from "../client.js";
 
 export const listReportsSchema = {
-  company_id: z.string().describe("Company UUID or ISIN (e.g. SE0000115446)"),
+  company_id: z.string().describe("Company UUID, ISIN (e.g. SE0000115446), or ticker (e.g. VOLV-B or VOLV B)"),
   report_type: z.enum(["RR", "BR", "KA"]).optional().describe("Filter by report type: RR (income), BR (balance), KA (cash flow)"),
   entity_type: z.enum(["CONSOLIDATED", "PARENT"]).optional().describe("Entity type. Default: CONSOLIDATED"),
   period_type: z.enum(["year", "quarter", "ttm", "all"]).optional().describe("Period length filter. Default: all"),
@@ -13,6 +13,7 @@ export const listReportsSchema = {
   offset: z.number().int().min(0).optional().describe("Pagination offset (default 0)"),
   sort: z.enum(["report_date", "period"]).optional().describe("Sort field. Default: report_date"),
   order: z.enum(["asc", "desc"]).optional().describe("Sort order. Default: desc"),
+  merge: z.boolean().optional().describe("Merge RR, BR and KA into one row per period. limit and quota then count per period."),
 };
 
 export async function listReports(client: BorsApiClient, args: z.infer<z.ZodObject<typeof listReportsSchema>>) {

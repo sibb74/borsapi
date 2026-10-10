@@ -110,18 +110,21 @@ Följande verktyg görs tillgängliga för din AI-assistent när du kör MCP-ser
 
 | Verktyg | Beskrivning |
 |---------|-------------|
-| `search_companies` | Sök och lista svenska noterade bolag |
-| `get_company` | Hämta detaljerad bolagsinformation via UUID eller ISIN |
+| `search_companies` | Sök och lista svenska noterade bolag. Varje bolag har `has_reports` och `report_count` |
+| `get_company` | Hämta detaljerad bolagsinformation via UUID, ISIN eller ticker |
 | `get_company_coverage` | Se vilka rapportperioder och rapporttyper (års-/kvartalsrapporter) som finns tillgängliga för ett bolag |
-| `list_reports` | Hämta finansiella rapporter med filter (t.ex. typ, period, enhet) |
+| `list_reports` | Hämta finansiella rapporter med filter. `merge=true` ger en rad per period |
 | `get_report` | Hämta en specifik rapport för en period (konsoliderad resultat-, balans- och kassaflödesanalys) |
 | `get_company_short_positions` | Hämta alla råa blankningspositioner för ett bolag från FI *(Gratis / 0 kvotavdrag, max 6 mån historik för Free)* |
 | `get_company_short_statistics` | Hämta aggregerad blankningsstatistik (% totalt blankat, antal blankare) för ett bolag *(Gratis / 0 kvotavdrag)* |
 | `list_short_positions` | Lista Sveriges mest blankade bolag och aktiva positioner *(Gratis / 0 kvotavdrag)* |
+| `list_insider_transactions` | Hämta insynstransaktioner för alla bolag (`from_date`, `to_date`, `limit`, `offset`) *(Gratis / 0 kvotavdrag, max 6 mån för Free)* |
 | `get_company_insider_transactions` | Hämta insynstransaktioner (köp/sälj/tilldelning av ledande befattningshavare) från FI *(Gratis / 0 kvotavdrag, max 6 mån för Free)* |
 | `get_company_insider_statistics` | Hämta aggregerad insynsstatistik (30d, 90d och 365d nettoköp och VD-aktivitet, 365d kräver Hobby/Pro) *(Gratis / 0 kvotavdrag)* |
 | `export_company_reports` | Exportera bolagsrapporter till CSV-format |
 | `request_company_priority` | Önska prioriterad skrapning av ett osrkapat bolag |
+| `get_report_calendar` | Kommande rapporter och bolagshändelser inom ett datumintervall *(0 kvot)* |
+| `get_company_calendar` | Kalender för ett bolag via UUID, ISIN eller ticker *(0 kvot)* |
 | `get_coverage_stats` | Statistik om databasens totala täckning (kräver ej autentisering) |
 | `check_api_key` | Kontrollera din API-nyckels status och återstående kvot *(Gratis / 0 kvotavdrag)* |
 

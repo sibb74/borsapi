@@ -3,7 +3,7 @@ import type { BorsApiClient } from "../client.js";
 import { formatApiError } from "../client.js";
 
 export const getReportSchema = {
-  company_id: z.string().describe("Company UUID or ISIN (e.g. SE0000115446)"),
+  company_id: z.string().describe("Company UUID, ISIN (e.g. SE0000115446), or ticker (e.g. VOLV-B or VOLV B)"),
   period: z.string().describe("Period (e.g. 2024, 2024-Q3)"),
   report_type: z.enum(["RR", "BR", "KA"]).optional().describe("Optional: return only one statement type instead of consolidated RR+BR+KA"),
   entity_type: z.enum(["CONSOLIDATED", "PARENT"]).optional().describe("Entity type. Default: CONSOLIDATED"),

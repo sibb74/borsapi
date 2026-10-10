@@ -11,6 +11,7 @@ import { getCompanyShortPositions, getCompanyShortPositionsSchema } from "./get-
 import { getCompanyShortStatistics, getCompanyShortStatisticsSchema } from "./get-company-short-statistics.js";
 import { listShortPositions, listShortPositionsSchema } from "./list-short-positions.js";
 import { getCompanyInsiderTransactions, getCompanyInsiderTransactionsSchema } from "./get-company-insider-transactions.js";
+import { listInsiderTransactions, listInsiderTransactionsSchema } from "./list-insider-transactions.js";
 import { getCompanyInsiderStatistics, getCompanyInsiderStatisticsSchema } from "./get-company-insider-statistics.js";
 import { exportCompanyReports, exportCompanyReportsSchema } from "./export-company-reports.js";
 import { requestCompanyPriority, requestCompanyPrioritySchema } from "./request-company-priority.js";
@@ -25,7 +26,7 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
     "search_companies",
     {
       description:
-        "Search and list Swedish listed companies. Filter by name, ticker, ISIN, sector, or market. Returns paginated results.",
+        "Search and list Swedish listed companies. Filter by name, ticker, ISIN, sector, or market. Each company includes has_reports and report_count. Returns paginated results.",
       inputSchema: searchCompaniesSchema,
     },
     async (args) => searchCompanies(client, args)
@@ -34,7 +35,7 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
   server.registerTool(
     "get_company",
     {
-      description: "Get details for a specific Swedish listed company by UUID or ISIN.",
+      description: "Get details for a specific Swedish listed company by UUID, ISIN, or ticker.",
       inputSchema: getCompanySchema,
     },
     async (args) => getCompany(client, args)
@@ -53,7 +54,7 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
   server.registerTool(
     "list_reports",
     {
-      description: `List financial reports for a company with optional filters. ${SIGN_CONVENTION}`,
+      description: `List financial reports for a company. Without merge, each period is three rows (RR, BR, KA) and quota is per row. merge=true returns one row per period and charges one quota unit per period. Company id accepts UUID, ISIN, or ticker. ${SIGN_CONVENTION}`,
       inputSchema: listReportsSchema,
     },
     async (args) => listReports(client, args)
@@ -93,6 +94,15 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
       inputSchema: listShortPositionsSchema,
     },
     async (args) => listShortPositions(client, args)
+  );
+
+  server.registerTool(
+    "list_insider_transactions",
+    {
+      description: "List insider transactions across all companies. from/to and from_date/to_date both work. Free quota. is_related_party is boolean.",
+      inputSchema: listInsiderTransactionsSchema,
+    },
+    async (args) => listInsiderTransactions(client, args)
   );
 
   server.registerTool(
