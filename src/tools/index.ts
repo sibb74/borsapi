@@ -17,6 +17,8 @@ import { exportCompanyReports, exportCompanyReportsSchema } from "./export-compa
 import { requestCompanyPriority, requestCompanyPrioritySchema } from "./request-company-priority.js";
 import { getReportCalendar, getReportCalendarSchema } from "./get-report-calendar.js";
 import { getCompanyCalendar, getCompanyCalendarSchema } from "./get-company-calendar.js";
+import { getMarketFeed, getMarketFeedSchema } from "./get-market-feed.js";
+import { getLatestReports, getLatestReportsSchema } from "./get-latest-reports.js";
 
 const SIGN_CONVENTION =
   "Costs, expenses, taxes, liabilities, and cash outflows are negative values. Revenues, assets, and inflows are positive.";
@@ -159,6 +161,25 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
       inputSchema: getCompanyCalendarSchema,
     },
     async (args) => getCompanyCalendar(client, args)
+  );
+
+  server.registerTool(
+    "get_market_feed",
+    {
+      description:
+        "Get a unified market activity feed across Swedish listed companies (new reports, insider transactions, short selling, upcoming calendar events). Supports since timestamp and filtering by types.",
+      inputSchema: getMarketFeedSchema,
+    },
+    async (args) => getMarketFeed(client, args)
+  );
+
+  server.registerTool(
+    "get_latest_reports",
+    {
+      description: `Get the most recently registered financial reports across all Swedish listed companies. Supports filtering by report_type, entity_type, period_type, and dates. ${SIGN_CONVENTION}`,
+      inputSchema: getLatestReportsSchema,
+    },
+    async (args) => getLatestReports(client, args)
   );
 
   server.registerTool(

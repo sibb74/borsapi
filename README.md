@@ -125,6 +125,8 @@ Följande verktyg görs tillgängliga för din AI-assistent när du kör MCP-ser
 | `request_company_priority` | Önska prioriterad skrapning av ett osrkapat bolag |
 | `get_report_calendar` | Kommande rapporter och bolagshändelser inom ett datumintervall *(0 kvot)* |
 | `get_company_calendar` | Kalender för ett bolag via UUID, ISIN eller ticker *(0 kvot)* |
+| `get_market_feed` | Samlat marknadsflöde över börshändelser (nya rapporter, insynshandel, blankning, kalender) |
+| `get_latest_reports` | Hämta de senast registrerade finansiella rapporterna över hela börsen |
 | `get_coverage_stats` | Statistik om databasens totala täckning (kräver ej autentisering) |
 | `check_api_key` | Kontrollera din API-nyckels status och återstående kvot *(Gratis / 0 kvotavdrag)* |
 

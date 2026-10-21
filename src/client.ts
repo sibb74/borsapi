@@ -28,7 +28,7 @@ export class BorsApiClient {
 
     const headers: Record<string, string> = {
       Accept: "application/json",
-      "User-Agent": "borsapi-mcp-server/1.1.0",
+      "User-Agent": "borsapi-mcp-server/1.1.2",
     };
 
     if (requireAuth) {
@@ -62,7 +62,7 @@ export class BorsApiClient {
     const headers: Record<string, string> = {
       Accept: "application/json",
       "Content-Type": "application/json",
-      "User-Agent": "borsapi-mcp-server/1.1.0",
+      "User-Agent": "borsapi-mcp-server/1.1.2",
     };
 
     if (requireAuth) {

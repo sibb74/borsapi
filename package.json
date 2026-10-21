@@ -1,6 +1,6 @@
 {
   "name": "@borsapi/mcp-server",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "MCP server for BörsAPI — query Swedish financial data from AI tools like Cursor and Claude Desktop",
   "type": "module",
   "main": "./dist/index.js",
