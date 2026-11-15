@@ -19,6 +19,10 @@ import { getReportCalendar, getReportCalendarSchema } from "./get-report-calenda
 import { getCompanyCalendar, getCompanyCalendarSchema } from "./get-company-calendar.js";
 import { getMarketFeed, getMarketFeedSchema } from "./get-market-feed.js";
 import { getLatestReports, getLatestReportsSchema } from "./get-latest-reports.js";
+import { searchFunds, searchFundsSchema } from "./search-funds.js";
+import { getFund, getFundSchema } from "./get-fund.js";
+import { getFundNav, getFundNavSchema } from "./get-fund-nav.js";
+import { getFundHoldings, getFundHoldingsSchema } from "./get-fund-holdings.js";
 
 const SIGN_CONVENTION =
   "Costs, expenses, taxes, liabilities, and cash outflows are negative values. Revenues, assets, and inflows are positive.";
@@ -28,7 +32,7 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
     "search_companies",
     {
       description:
-        "Search and list Swedish listed companies. Filter by name, ticker, ISIN, sector, or market. Each company includes has_reports and report_count. Returns paginated results.",
+        "Search and list listed companies in Sweden and US (S&P 500, Nasdaq 100). Filter by name, ticker, ISIN, sector, market, or country. Volvo (VOLV-B) and SKF (SKF-B) are free in Developer Sandbox (0 quota). Returns paginated results.",
       inputSchema: searchCompaniesSchema,
     },
     async (args) => searchCompanies(client, args)
@@ -37,7 +41,7 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
   server.registerTool(
     "get_company",
     {
-      description: "Get details for a specific Swedish listed company by UUID, ISIN, or ticker.",
+      description: "Get details for a specific listed company (Sweden or US) by UUID, ISIN, or ticker (e.g. VOLV-B, AAPL).",
       inputSchema: getCompanySchema,
     },
     async (args) => getCompany(client, args)
@@ -176,10 +180,50 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
   server.registerTool(
     "get_latest_reports",
     {
-      description: `Get the most recently registered financial reports across all Swedish listed companies. Supports filtering by report_type, entity_type, period_type, and dates. ${SIGN_CONVENTION}`,
+      description: `Get the most recently registered financial reports across all listed companies (Sweden and US). Supports filtering by report_type, entity_type, period_type, and dates. ${SIGN_CONVENTION}`,
       inputSchema: getLatestReportsSchema,
     },
     async (args) => getLatestReports(client, args)
+  );
+
+  server.registerTool(
+    "search_funds",
+    {
+      description:
+        "Search and list Swedish and Nordic mutual funds (PPM & UCITS). Filter by name, category, manager, or ISIN, and sort by returns (1m, 3m, ytd, 1y, 3y, 5y) or fees. Sandbox fund Spiltan (SE0000429821) is 0 quota.",
+      inputSchema: searchFundsSchema,
+    },
+    async (args) => searchFunds(client, args)
+  );
+
+  server.registerTool(
+    "get_fund",
+    {
+      description:
+        "Get detailed information for a mutual fund by UUID, ISIN (e.g. SE0000429821), or PPM number. Includes fee structure, category, returns, latest NAV, and KID URL.",
+      inputSchema: getFundSchema,
+    },
+    async (args) => getFund(client, args)
+  );
+
+  server.registerTool(
+    "get_fund_nav",
+    {
+      description:
+        "Get historical daily NAV time series for a mutual fund. Quota-free (0 quota units) on all plans. Sandbox fund Spiltan (SE0000429821) has full history.",
+      inputSchema: getFundNavSchema,
+    },
+    async (args) => getFundNav(client, args)
+  );
+
+  server.registerTool(
+    "get_fund_holdings",
+    {
+      description:
+        "Get portfolio holdings (stocks and asset allocations) for a mutual fund with weights and associated BörsAPI tickers. Quota-free.",
+      inputSchema: getFundHoldingsSchema,
+    },
+    async (args) => getFundHoldings(client, args)
   );
 
   server.registerTool(
@@ -196,7 +240,7 @@ export function registerTools(server: McpServer, client: BorsApiClient): void {
     "check_api_key",
     {
       description:
-        "Validate the configured API key and return remaining quota (usage_today, daily_limit, remaining).",
+        "Validate the configured API key and return subscription plan, monthly quota (monthly_limit, usage_30d, remaining, reset_at), and sandbox info.",
       inputSchema: {},
     },
     async () => checkApiKey(client)

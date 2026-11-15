@@ -3,7 +3,7 @@ import type { BorsApiClient } from "../client.js";
 import { formatApiError } from "../client.js";
 
 export const getCompanySchema = {
-  company_id: z.string().describe("Company UUID, ISIN (e.g. SE0000115446), or ticker (e.g. VOLV-B or VOLV B)"),
+  company_id: z.string().describe("Company UUID, ISIN (e.g. SE0000115446, US0378331005), or ticker (e.g. VOLV-B, AAPL)"),
 };
 
 export async function getCompany(client: BorsApiClient, args: z.infer<z.ZodObject<typeof getCompanySchema>>) {

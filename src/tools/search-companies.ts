@@ -4,10 +4,11 @@ import { formatApiError } from "../client.js";
 
 export const searchCompaniesSchema = {
   search: z.string().optional().describe("Search by company name or ticker (case-insensitive)"),
-  ticker: z.string().optional().describe("Exact ticker match (e.g. VOLV-B)"),
-  isin: z.string().optional().describe("Exact ISIN match (e.g. SE0000115446)"),
+  ticker: z.string().optional().describe("Exact ticker match (e.g. VOLV-B, AAPL)"),
+  isin: z.string().optional().describe("Exact ISIN match (e.g. SE0000115446, US0378331005)"),
   sector: z.string().optional().describe("Filter by sector"),
-  market: z.string().optional().describe("Market code: XSTO, FNSE, XNGM, XSAT, or all"),
+  market: z.string().optional().describe("Market code: XSTO, FNSE, XNGM, XSAT, US, or all"),
+  country: z.string().optional().describe("Filter by country: SE (Sweden) or US (United States)"),
   include_mtf: z.boolean().optional().describe("Include MTF markets (First North, Spotlight, NGM). Default: false"),
   limit: z.number().int().min(1).max(100).optional().describe("Max results (1-100, default 20)"),
   offset: z.number().int().min(0).optional().describe("Pagination offset (default 0)"),

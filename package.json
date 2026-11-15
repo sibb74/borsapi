@@ -1,7 +1,7 @@
 {
   "name": "@borsapi/mcp-server",
-  "version": "1.1.2",
-  "description": "MCP server for BörsAPI — query Swedish financial data from AI tools like Cursor and Claude Desktop",
+  "version": "1.2.0",
+  "description": "MCP server for BörsAPI — query Swedish and US financial data and funds from AI tools like Cursor and Claude Desktop",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,7 +32,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/borsapi/borsapi.git",
+    "url": "https://github.com/sibb74/borsapi.git",
     "directory": "packages/mcp-server"
   },
   "engines": {
